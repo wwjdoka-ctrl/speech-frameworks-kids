@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Speech Frameworks for Kids</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#7F77DD">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#FBFAF8;color:#1A1A1A}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden}
+.wrap{max-width:680px;margin:0 auto;padding:1rem 1rem 3rem}
+.app-header{padding:1rem 0 .5rem;text-align:center}
+.app-header h1{font-size:18px;font-weight:600;color:#3C3489}
+.app-header p{font-size:12px;color:#888;margin-top:2px}
+.sect-label{font-size:11px;font-weight:500;color:#999;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.pill{padding:6px 13px;border-radius:99px;border:0.5px solid #DDD;background:#fff;color:#555;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}
+.pill:active{transform:scale(0.96)}
+.pill.a-active{background:#E1F5EE;color:#085041;border-color:#5DCAA5}
+.fw-scroll{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:.75rem}
+.fw-btn{padding:6px 12px;border-radius:99px;border:0.5px solid #DDD;background:#fff;color:#555;font-size:12px;cursor:pointer;white-space:nowrap}
+.fw-btn:active{transform:scale(0.96)}
+.fw-btn.f-active{background:#EEEDFE;color:#3C3489;border-color:#AFA9EC}
+.use-bar{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.75rem;padding:9px 12px;background:#F5F4F2;border-radius:10px;border:0.5px solid #EEE}
+.use-tag{padding:3px 9px;border-radius:99px;font-size:11px;font-weight:500}
+.u-purple{background:#EEEDFE;color:#3C3489}
+.u-teal{background:#E1F5EE;color:#085041}
+.u-coral{background:#FAECE7;color:#712B13}
+.u-amber{background:#FAEEDA;color:#633806}
+.u-blue{background:#E6F1FB;color:#0C447C}
+.u-pink{background:#FBEAF0;color:#72243E}
+.use-title{font-size:11px;font-weight:500;color:#777;margin-right:4px;align-self:center;white-space:nowrap}
+.panel{border:0.5px solid #EEE;border-radius:14px;background:#fff;padding:1.1rem;margin-bottom:.75rem;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.ph{display:flex;align-items:flex-start;gap:10px;margin-bottom:.75rem}
+.ph-icon{font-size:24px;flex-shrink:0;margin-top:2px}
+.ph-title{font-size:15px;font-weight:600;color:#1A1A1A}
+.ph-sub{font-size:12px;color:#777;margin-top:2px}
+.ph-when{font-size:12px;color:#999;margin-top:4px;line-height:1.55}
+.step{display:flex;gap:10px;align-items:flex-start;padding:9px 11px;border-radius:10px;border:0.5px solid #EEE;background:#FAFAF9;margin-bottom:6px}
+.step.cur{border-color:#7F77DD;background:#EEEDFE}
+.snum{min-width:22px;height:22px;border-radius:50%;background:#CECBF6;color:#3C3489;font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step.cur .snum{background:#7F77DD;color:#fff}
+.sk{font-size:11px;font-weight:600;color:#666;text-transform:uppercase;letter-spacing:.04em}
+.sc{font-size:13px;color:#1A1A1A;margin-top:2px}
+.sit-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.sc-chip{padding:4px 10px;border-radius:99px;border:0.5px solid #DDD;font-size:12px;color:#666;cursor:pointer}
+.sc-chip.s-active{background:#FAEEDA;color:#633806;border-color:#EF9F27}
+.ex-box{background:#FAEEDA;border-left:3px solid #EF9F27;border-radius:0 10px 10px 0;padding:10px 13px;margin:1rem 0}
+.ex-label{font-size:11px;font-weight:600;color:#854F0B;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.ex-text{font-size:13px;color:#412402;line-height:1.7}
+.ex-key{color:#854F0B;font-weight:600}
+.big-btn{width:100%;padding:12px;border-radius:10px;border:0.5px solid #AFA9EC;background:#7F77DD;color:#fff;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:8px}
+.big-btn:active{background:#534AB7}
+.nav-row{display:flex;gap:8px}
+.nav-btn{flex:1;padding:10px;border-radius:10px;border:0.5px solid #DDD;background:#fff;color:#1A1A1A;font-size:12px;cursor:pointer}
+.nav-btn:disabled{opacity:.35}
+.badge{display:inline-block;padding:2px 7px;border-radius:99px;font-size:10px;font-weight:600;margin-left:5px}
+.b-e{background:#EAF3DE;color:#27500A}
+.b-m{background:#FAEEDA;color:#633806}
+.b-h{background:#FAECE7;color:#712B13}
+.done-wrap{text-align:center;padding:1.5rem 1rem}
+.done-e{font-size:40px;margin-bottom:8px}
+.done-t{font-size:17px;font-weight:600;margin-bottom:5px}
+.done-s{font-size:13px;color:#777;margin-bottom:14px}
+.divider{height:0.5px;background:#EEE;margin:.75rem 0}
+.footer-note{text-align:center;font-size:11px;color:#bbb;padding:1rem 0}
+.practice-box{margin:1rem 0}
+.practice-toggle{display:flex;gap:6px;margin-bottom:8px}
+.ptab{flex:1;padding:8px;border-radius:10px;border:0.5px solid #DDD;background:#fff;color:#666;font-size:12px;font-weight:600;cursor:pointer;text-align:center}
+.ptab.pt-active{background:#E1F5EE;color:#085041;border-color:#5DCAA5}
+.practice-input{width:100%;min-height:70px;border:0.5px solid #DDD;border-radius:10px;padding:10px;font-size:14px;font-family:inherit;color:#1A1A1A;resize:vertical;background:#FAFAF9}
+.practice-input:focus{outline:none;border-color:#7F77DD;background:#fff}
+.mic-row{display:flex;gap:8px;margin-top:8px;align-items:center}
+.mic-btn{padding:10px 14px;border-radius:10px;border:0.5px solid #DDD;background:#fff;color:#1A1A1A;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
+.mic-btn.listening{background:#FAECE7;border-color:#F0997B;color:#712B13;animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.check-btn{flex:1;padding:10px;border-radius:10px;border:0.5px solid #5DCAA5;background:#E1F5EE;color:#085041;font-size:13px;font-weight:600;cursor:pointer}
+.feedback-card{margin-top:10px;border-radius:12px;padding:12px 14px;border:0.5px solid #EEE}
+.fb-great{background:#EAF3DE;border-color:#A8D08A}
+.fb-okay{background:#FAEEDA;border-color:#EF9F27}
+.fb-needswork{background:#FAECE7;border-color:#F0997B}
+.fb-header{font-size:13px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.fb-great .fb-header{color:#27500A}
+.fb-okay .fb-header{color:#633806}
+.fb-needswork .fb-header{color:#712B13}
+.fb-list{font-size:12px;line-height:1.6;color:#333;margin:0;padding-left:18px}
+.fb-next{font-size:12px;margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(0,0,0,0.08);font-weight:600}
+.deeper-btn{width:100%;margin-top:8px;padding:9px;border-radius:10px;border:0.5px solid #AFA9EC;background:#fff;color:#3C3489;font-size:12px;font-weight:600;cursor:pointer}
+.deeper-note{font-size:10px;color:#999;text-align:center;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="app-header">
+    <h1>🗣️ Speech Frameworks for Kids</h1>
+    <p>Pick an age, a framework, and a situation to practice</p>
+  </div>
+  <div id="app"></div>
+  <div class="footer-note">Made for practicing real conversations 💬</div>
+</div>
+
+<script>
+const AGES=["4–6","7–9","10–12"];
+const SITS=["at school","at home","with friends","on a trip","in a sport","solving a problem","sharing feelings","telling a story"];
+const AGE_KEY={"4–6":"a0","7–9":"a1","10–12":"a2"};
+
+const FWS=[
+  {id:"isaw",icon:"👀",name:"I SAW",diff:"easy",desc:"Notice and share what you observed",
+   usecases:[{label:"Observe",color:"u-teal"},{label:"Describe",color:"u-blue"},{label:"Share feelings",color:"u-pink"},{label:"Start a conversation",color:"u-purple"}],
+   when:"Use when sharing something you noticed, describing what happened, or starting a conversation about how an experience made you feel.",
+   steps:[
+     {key:"I saw...",prompt:{a0:"Point to something and say: I saw ___!",a1:"Describe one thing you noticed around you.",a2:"Observe and name something specific with detail."}},
+     {key:"It was...",prompt:{a0:"Use one fun word to describe it!",a1:"Give two describing words!",a2:"Use vivid, precise adjectives."}},
+     {key:"I felt...",prompt:{a0:"Happy? Sad? Surprised? Tell us!",a1:"Name your feeling and say a little why.",a2:"Describe the emotion and what caused it."}}
+   ],
+   ex:{
+     "at school":{a0:["I saw","a big yellow butterfly.","It was","pretty and soft.","I felt","really happy!"],a1:["I saw","my teacher write a huge problem on the board.","It was","confusing but kind of exciting.","I felt","curious and a little nervous."],a2:["I saw","a student break down during a presentation.","It was","painful to witness.","I felt","a deep empathy and the urge to help."]},
+     "at home":{a0:["I saw","my dog sleeping.","It was","so fluffy!","I felt","cozy and happy."],a1:["I saw","my dad cooking something new.","It was","colorful and smelled amazing.","I felt","hungry and excited."],a2:["I saw","my grandmother sitting alone, staring out the window.","It was","a quiet and tender moment.","I felt","a bittersweet mix of love and concern."]},
+     "with friends":{a0:["I saw","my friend fall down.","It was","scary!","I felt","really worried."],a1:["I saw","my best friend get left out of a game.","It was","really unfair.","I felt","upset and wanted to help."],a2:["I saw","my closest friend being excluded.","It was","cruel to witness.","I felt","a strong protectiveness and the need to speak up."]},
+     "on a trip":{a0:["I saw","a big waterfall!","It was","loud and wet!","I felt","so amazed!"],a1:["I saw","the ocean for the first time.","It was","massive and sparkling.","I felt","tiny but amazed."],a2:["I saw","desert dunes at sunrise with no one else around.","It was","staggeringly vast and silent.","I felt","humbled."]},
+     "in a sport":{a0:["I saw","the ball go in the net!","It was","so fast!","I felt","super excited!"],a1:["I saw","my teammate score the winning goal.","It was","a perfect kick.","I felt","so proud."],a2:["I saw","my teammate push through injury to finish.","It was","an extraordinary act of will.","I felt","profound admiration."]},
+     "solving a problem":{a0:["I saw","a big mess.","It was","everywhere!","I felt","ready to clean it up."],a1:["I saw","my project had fallen apart overnight.","It was","frustrating.","I felt","determined to fix it."],a2:["I saw","the system fail hours before the deadline.","It was","a cascade with no obvious fix.","I felt","a calm I didn't know I had — and started working."]},
+     "sharing feelings":{a0:["I saw","my friend cry.","It was","sad.","I felt","like giving her a hug."],a1:["I saw","someone sit alone at lunch every day.","It was","hard to watch.","I felt","like I had to do something."],a2:["I saw","loneliness in someone surrounded by people.","It was","a quiet invisible pain.","I felt","sharp recognition — I had felt that too."]},
+     "telling a story":{a0:["I saw","a cat climb a tree!","It was","funny!","I felt","like laughing."],a1:["I saw","a musician playing in the rain for no one.","It was","beautiful and sad.","I felt","like stopping to listen."],a2:["I saw","a stranger help an elderly man unprompted.","It was","a small ordinary miracle.","I felt","my faith in people restored."]}
+   }
+  },
+  {id:"whowhat",icon:"🗺️",name:"WHO + WHAT",diff:"easy",desc:"Answer two simple questions",
+   usecases:[{label:"Report",color:"u-blue"},{label:"Explain",color:"u-teal"},{label:"Introduce",color:"u-purple"},{label:"Answer a question",color:"u-coral"}],
+   when:"Use when someone asks what happened, when you need to report an event, or when introducing a person or animal in your story.",
+   steps:[
+     {key:"Who?",prompt:{a0:"Name a person or animal you know!",a1:"Name who the story is about.",a2:"Identify the key person and their role."}},
+     {key:"What happened?",prompt:{a0:"What did they do? Say it in one sentence!",a1:"Tell what happened clearly.",a2:"Describe the action and its significance."}}
+   ],
+   ex:{
+     "at school":{a0:["Who?","My teacher!","What happened?","She gave us all stickers today!"],a1:["Who?","The new kid in class.","What happened?","He shared his lunch with someone who forgot theirs."],a2:["Who?","A quiet student in the back of class.","What happened?","She gave the most powerful answer to a question no one else dared to attempt."]},
+     "at home":{a0:["Who?","My dog Biscuit.","What happened?","He ate my sandwich!"],a1:["Who?","My dad.","What happened?","He surprised us with our favorite dinner for no reason."],a2:["Who?","My mother.","What happened?","She worked a double shift and still had dinner ready when we got home — without a single complaint."]},
+     "with friends":{a0:["Who?","My friend Lily.","What happened?","She shared her cookies with me!"],a1:["Who?","My best friend.","What happened?","He stood up for me when others were being unkind."],a2:["Who?","A friend I almost lost.","What happened?","She called me at midnight just to check if I was okay — and she was right that I wasn't."]},
+     "on a trip":{a0:["Who?","A cute little bird!","What happened?","It landed right on my hand!"],a1:["Who?","A local guide on our trip.","What happened?","He told us a legend about the mountain that made it feel magical."],a2:["Who?","A stranger we met on a remote trail.","What happened?","He gave us his last water and directions that saved our entire hike."]},
+     "in a sport":{a0:["Who?","My coach!","What happened?","She cheered the loudest for me!"],a1:["Who?","The player from the other team.","What happened?","She helped me up after I fell, even though we were competing."],a2:["Who?","The most underestimated player on our team.","What happened?","She scored in the final second and silenced everyone who had doubted her all season."]},
+     "solving a problem":{a0:["Who?","My big brother.","What happened?","He fixed my broken toy!"],a1:["Who?","My classmate.","What happened?","She found the answer when the whole group was completely stuck."],a2:["Who?","The newest member of our team.","What happened?","He identified the flaw in our plan that the rest of us had overlooked for weeks."]},
+     "sharing feelings":{a0:["Who?","Me!","What happened?","I told my mom I was feeling really sad."],a1:["Who?","My friend.","What happened?","She told me she was struggling and I just listened — without trying to fix it."],a2:["Who?","Someone I barely knew.","What happened?","She trusted me with something deeply personal — and that trust changed how I show up for people."]},
+     "telling a story":{a0:["Who?","A big green frog!","What happened?","It jumped right onto my shoe!"],a1:["Who?","A stranger on the bus.","What happened?","He started humming quietly and the whole bus slowly went calm."],a2:["Who?","An elderly woman I met at a bus stop.","What happened?","She told me her life story in seven minutes and I still think about it."]}
+   }
+  },
+  {id:"star",icon:"⭐",name:"STAR",diff:"medium",desc:"Tell a story with a clear beginning, challenge, action, and outcome",
+   usecases:[{label:"Tell a story",color:"u-purple"},{label:"Answer 'tell me about a time...'",color:"u-blue"},{label:"Explain what you did",color:"u-teal"},{label:"Show growth",color:"u-coral"},{label:"Interview",color:"u-amber"}],
+   when:"Use when telling a personal story, answering 'what happened?' or 'tell me about a time you...' questions, or showing how you handled a challenge.",
+   steps:[
+     {key:"S — Situation",prompt:{a0:"Where were you? Tell us the place!",a1:"Set the scene — where, when, and who was there.",a2:"Paint the context vividly — stakes, setting, people."}},
+     {key:"T — Task",prompt:{a0:"What did you need to do?",a1:"What was your job or challenge?",a2:"Define what was required of you specifically."}},
+     {key:"A — Action",prompt:{a0:"What did YOU do? Be the hero!",a1:"What steps did you take to handle it?",a2:"Describe the deliberate choices you made."}},
+     {key:"R — Result",prompt:{a0:"What happened after? Happy ending?",a1:"How did it turn out? What changed?",a2:"What was the outcome — and what did it teach you?"}}
+   ],
+   ex:{
+     "at school":{a0:["S —","I was in class.","T —","Talk in front of everyone!","A —","I took a breath and said my words.","R —","My teacher gave me a gold star!"],a1:["S —","Presentation day in science class.","T —","Present my experiment alone.","A —","I practiced at home and spoke clearly.","R —","I got the top score!"],a2:["S —","State science fair, packed gym, panel of judges.","T —","Present three months of research in five minutes.","A —","Eye contact, precise language, composed Q&A.","R —","First place — and two classmates said I inspired them."]},
+     "at home":{a0:["S —","Mom was tired.","T —","I wanted to help!","A —","I made toast by myself!","R —","Mom hugged me and said I was amazing!"],a1:["S —","My mom was sick Sunday.","T —","Take care of my brother all day.","A —","Made sandwiches, played games, kept things calm.","R —","Mom rested. She said I handled it perfectly."],a2:["S —","Mom came home from a double shift depleted.","T —","Remove every obligation from her evening.","A —","Cooked dinner, bathed sibling, cleaned up.","R —","She cried from relief. I understood something new about love."]},
+     "with friends":{a0:["S —","At the park.","T —","My friend was crying.","A —","I gave her a hug.","R —","She smiled again!"],a1:["S —","Friend sitting alone at lunch.","T —","Make sure she was okay.","A —","Sat beside her and just listened.","R —","She opened up. She thanked me later."],a2:["S —","Friend growing withdrawn over weeks.","T —","Reach her without pushing her away.","A —","Showed up consistently — no demands.","R —","She said my quiet presence made her feel safe enough to speak."]},
+     "on a trip":{a0:["S —","We were hiking!","T —","We got lost!","A —","I asked someone for help.","R —","We found the way!"],a1:["S —","School group got separated at museum.","T —","Meet everyone at entrance in 10 minutes.","A —","I remembered the map and led us back.","R —","On time. Teacher was impressed."],a2:["S —","Off trail, no signal, sunset approaching.","T —","Navigate back using only memory.","A —","Oriented by sun, guided group step by step.","R —","Reached camp at last light."]},
+     "in a sport":{a0:["S —","Big game day!","T —","Score a goal!","A —","I ran fast and kicked hard.","R —","GOAL! We won!"],a1:["S —","Championship, tied, final minutes.","T —","One clear shot to make a difference.","A —","Blocked out noise, dribbled, shot.","R —","It went in. We won."],a2:["S —","Final seconds of championship, tied.","T —","Execute the play under maximum pressure.","A —","Trusted muscle memory, decided in a second.","R —","The win. Pressure reveals character."]},
+     "solving a problem":{a0:["S —","My puzzle was broken.","T —","Fix it!","A —","I tried and tried.","R —","I fixed it!"],a1:["S —","Project stopped working night before due.","T —","Fix it alone.","A —","Searched, found the error, fixed it step by step.","R —","Submitted on time. Full marks."],a2:["S —","System collapsed hours before deadline.","T —","Rebuild critical sections in two hours.","A —","Isolated failures, rebuilt methodically.","R —","Submitted cleaner than the original."]},
+     "sharing feelings":{a0:["S —","I was really sad.","T —","Tell someone.","A —","I told my mom.","R —","Hugged and felt better!"],a1:["S —","Felt left out all week.","T —","Say something without a fight.","A —","Told my friend calmly how I felt.","R —","They apologized. Friendship got stronger."],a2:["S —","Carrying hurt for weeks, afraid to say it.","T —","Communicate impact without attacking.","A —","Spoke directly and vulnerably.","R —","We emerged closer. Silence had protected nothing."]},
+     "telling a story":{a0:["S —","One day at the park...","T —","Strange noise!","A —","I went to look.","R —","Baby duck!"],a1:["S —","Walking home, something unusual stopped me.","T —","Keep going or investigate?","A —","Found a lost puppy behind a bush.","R —","Called the owner. Best walk home ever."],a2:["S —","Ordinary Tuesday, extraordinary moment.","T —","Safe route or the curious one?","A —","Followed the instinct, stayed to see it through.","R —","Walked home changed."]}
+   }
+  },
+  {id:"pep",icon:"📣",name:"PEP",diff:"medium",desc:"State your opinion, explain it, and prove it",
+   usecases:[{label:"Give an opinion",color:"u-coral"},{label:"Convince",color:"u-purple"},{label:"Defend an idea",color:"u-amber"},{label:"Class discussion",color:"u-blue"},{label:"Persuade",color:"u-teal"}],
+   when:"Use when sharing your opinion, trying to convince someone, participating in a class discussion, or defending an idea you believe in.",
+   steps:[
+     {key:"P — Point",prompt:{a0:"What do you think? Say it loud!",a1:"State your opinion clearly in one sentence.",a2:"Articulate your position with precision."}},
+     {key:"E — Explain",prompt:{a0:"Give one reason why!",a1:"Explain the reason behind your opinion.",a2:"Provide a logical, well-reasoned argument."}},
+     {key:"P — Proof",prompt:{a0:"Tell something that happened to prove it!",a1:"Give a real example from life.",a2:"Cite specific evidence or a compelling case."}}
+   ],
+   ex:{
+     "at school":{a0:["P —","Books are the best!","E —","They teach you everything.","P (proof) —","I learned about dinosaurs from a book and now I know ALL the names!"],a1:["P —","Recess should be longer.","E —","Kids focus better after they've had a chance to move and play.","P (proof) —","Our class always scores higher on quizzes right after outdoor time."],a2:["P —","Creative unstructured time is as educationally vital as academic instruction.","E —","Research shows play enhances cognitive flexibility, emotional regulation, and concentration.","P (proof) —","Schools that extended recess by 15 minutes saw measurable improvement in standardized test performance within one semester."]},
+     "at home":{a0:["P —","Chores are actually good!","E —","They help your whole family.","P (proof) —","When I sweep, my mom has more time to play with me!"],a1:["P —","Kids should help with chores at home.","E —","It teaches responsibility and shows you care about your family.","P (proof) —","Since I started washing dishes, my whole family has more time together in the evenings."],a2:["P —","Distributing household responsibilities builds character and strengthens family cohesion.","E —","Children who contribute meaningfully develop ownership, empathy, and work ethic that transfers to every other domain.","P (proof) —","Since my siblings and I took on structured chores, our household runs better — and our relationships have deepened in ways I didn't anticipate."]},
+     "with friends":{a0:["P —","Sharing is the best thing ever!","E —","When you share, everyone is happy.","P (proof) —","I shared my snack and my friend smiled the whole entire day!"],a1:["P —","Good friends tell each other the truth, even when it's hard.","E —","Honesty builds real trust — more than just being nice all the time.","P (proof) —","My best friend told me when I was being unkind. It hurt a little — and it made me better."],a2:["P —","Authentic friendship requires the courage to offer uncomfortable truths.","E —","Consistent validation without honesty creates relationships built on performance, not genuine connection.","P (proof) —","When a close friend told me I had been dismissive, it was hard to hear — and exactly what I needed. Our friendship became something real that day."]},
+     "on a trip":{a0:["P —","Trips are the best fun!","E —","You get to see new amazing things.","P (proof) —","I went on a trip and saw a real waterfall for the very first time!"],a1:["P —","Travelling teaches you more than staying home.","E —","You learn by seeing real places, not just reading about them.","P (proof) —","I understood history better after one museum visit than after a month of textbook chapters."],a2:["P —","Experiential travel is among the most powerful educational investments available to young people.","E —","Cultural immersion develops empathy, adaptability, and contextual understanding that classroom instruction cannot replicate.","P (proof) —","A single week abroad produced a shift in my worldview more significant than an entire academic semester."]},
+     "in a sport":{a0:["P —","Practice makes you great!","E —","The more you try, the better you get.","P (proof) —","I practiced my kicks every day and scored my very first goal!"],a1:["P —","Teamwork matters more than how talented you are.","E —","A team that works and communicates together beats a team of stars who don't.","P (proof) —","We weren't the most skilled team — but we communicated best and won the most games."],a2:["P —","In team sports, emotional intelligence consistently outperforms raw athletic talent.","E —","Athletes who communicate clearly, regulate under pressure, and elevate teammates sustain performance where individually superior players collapse.","P (proof) —","We faced the most talented opponents in the finals. We won because our cohesion and trust were unmatched — not our speed."]},
+     "solving a problem":{a0:["P —","Never give up — ever!","E —","If you keep trying, you will figure it out.","P (proof) —","I fell off my bike ten times — and now I can ride perfectly!"],a1:["P —","Making mistakes is actually how we learn best.","E —","Errors show us exactly what we need to change.","P (proof) —","I failed my first math test but studied my mistakes — and scored top of class next time."],a2:["P —","Failure, approached with honest reflection, is the most efficient teacher we have.","E —","Each mistake functions as a precise diagnostic — revealing not just what went wrong, but the thinking pattern that caused it.","P (proof) —","My most significant intellectual breakthrough came not from a success, but from honestly dissecting a failure I had initially wanted to dismiss."]},
+     "sharing feelings":{a0:["P —","Always say how you feel!","E —","When you say it out loud, you feel much better.","P (proof) —","I told my teacher I was scared and she helped me feel so brave!"],a1:["P —","Naming your feelings is really important.","E —","When you put words to how you feel, others can understand and help you.","P (proof) —","When I told my teacher I was overwhelmed, she gave me support — and I did far better than if I'd stayed quiet."],a2:["P —","Emotional articulation is one of the most undervalued skills in modern education.","E —","Children who name emotions with precision regulate more effectively, form deeper connections, and resolve conflict with greater skill.","P (proof) —","When I began explicitly naming emotions rather than acting them out, my relationships, academic performance, and ability to handle stress all improved measurably."]},
+     "telling a story":{a0:["P —","Everyone should tell their story!","E —","Stories make people feel good and happy.","P (proof) —","I told my class a story about my dog and they all laughed and loved it!"],a1:["P —","Everyone has a story that's worth sharing.","E —","Our real experiences are unique — and others often feel less alone when they hear them.","P (proof) —","When I shared how nervous I was about moving schools, three other kids said they had felt the exact same way."],a2:["P —","Personal storytelling is one of the most powerful acts of human connection available to us.","E —","When we share lived experience with honesty and vulnerability, we create bridges across radically different lives.","P (proof) —","The moment I told my real story about feeling like an outsider, the room erupted with recognition. I was not the only one — I was just the first to say it."]}
+   }
+  },
+  {id:"prep",icon:"💡",name:"PREP",diff:"hard",desc:"Make a strong argument with a clear point, reason, evidence, and closing",
+   usecases:[{label:"Argue",color:"u-coral"},{label:"Debate",color:"u-purple"},{label:"Persuade",color:"u-amber"},{label:"Present",color:"u-blue"},{label:"Recommend",color:"u-teal"},{label:"Propose",color:"u-pink"}],
+   when:"Use for debates, persuasive speeches, pitching an idea, making a recommendation, or anytime you need to convince someone with a strong structured argument.",
+   steps:[
+     {key:"P — Position",prompt:{a0:"What do you think? Say it clearly!",a1:"State your main idea in one strong sentence.",a2:"Open with a clear, confident thesis statement."}},
+     {key:"R — Reason",prompt:{a0:"Why do you think that? Give one reason!",a1:"Explain the reason behind your opinion.",a2:"Provide a compelling, logical rationale."}},
+     {key:"E — Example",prompt:{a0:"Tell something that happened to show it's true!",a1:"Give a real example from life or what you know.",a2:"Cite specific evidence, data, or a vivid case."}},
+     {key:"P — Position again",prompt:{a0:"Say your big idea one more time at the end!",a1:"Restate your point to wrap it up strongly.",a2:"Close with a powerful restatement that lands."}}
+   ],
+   ex:{
+     "at school":{a0:["P —","School should have more art!","R —","Art makes learning SO fun.","E —","When we painted planets I remembered all their names!","P —","More art in school — yes please!"],a1:["P —","Schools should teach students about money.","R —","Understanding money before adulthood prevents so many problems.","E —","Most adults say they wish they had learned budgeting in school, not the hard way.","P —","Financial literacy belongs in every classroom, starting now."],a2:["P —","Financial literacy must be mandated as a core subject in every secondary curriculum.","R —","Students who graduate without understanding compound interest, credit, and budgeting face entirely preventable hardship.","E —","Adults who received financial education in school are statistically 30% less likely to accumulate harmful debt in their twenties.","P —","We owe young people the tools to navigate the future — and money is unavoidable."]},
+     "at home":{a0:["P —","Kids should pick bedtime!","R —","We know when we're tired.","E —","When I choose my bedtime I sleep much better!","P —","Let kids decide!"],a1:["P —","Teens should have say in family decisions.","R —","It teaches responsibility and trust.","E —","When I planned our weekend, everyone loved it.","P —","Include teenagers — everyone benefits."],a2:["P —","Adolescents deserve a voice in decisions affecting them.","R —","Autonomy builds the judgment parents want them to develop.","E —","When consulted on household matters, my confidence and accountability both improved.","P —","Families that listen to teenagers raise the adults the world needs."]},
+     "with friends":{a0:["P —","Be kind, not cool!","R —","Kindness lasts longer.","E —","My kind friend has more real friends.","P —","Kindness beats cool every time!"],a1:["P —","True friendship supports each other's goals.","R —","Real friends encourage growth.","E —","My friend cheered for my science project even though she hates science.","P —","That's what real friendship looks like."],a2:["P —","Friendship is measured by showing up when it costs something.","R —","Loyalty under pressure is the only kind that matters.","E —","When I went through the hardest period of my life, one friend stayed. That changed everything I understand about friendship.","P —","Seek that friend. Be that friend."]},
+     "on a trip":{a0:["P —","Every kid should travel!","R —","It opens your eyes.","E —","I learned more in one day than a school week!","P —","Trips change how kids see the world!"],a1:["P —","More school trips — not just once a year.","R —","Real experiences make learning stick.","E —","One museum visit beat weeks of textbook reading.","P —","More trips would transform how students learn."],a2:["P —","Experiential learning is not a supplement — it often is the education.","R —","The brain retains experience far better than abstraction.","E —","One afternoon at a living history site produced more durable understanding than an entire textbook unit.","P —","Get students into the world they are being educated to inhabit."]},
+     "in a sport":{a0:["P —","Everyone should play a sport!","R —","Sports keep you healthy.","E —","Since soccer I sleep better and have more friends!","P —","Every kid should try!"],a1:["P —","Coaches should value effort over winning.","R —","Players learn more from how they compete.","E —","The coach who pushed me hardest made me feel safest to fail.","P —","Character coaches change lives."],a2:["P —","Character-first programs produce better human beings than trophy-first ones.","R —","Discipline and resilience from sport transfer to every life domain.","E —","My most impactful coach never won a championship. Every player traces their work ethic to him.","P —","Measure coaches by the adults their athletes become."]},
+     "solving a problem":{a0:["P —","Never give up!","R —","Trying teaches you.","E —","I failed ten times and then fixed it!","P —","Keep going!"],a1:["P —","Break big problems into small steps.","R —","Smaller pieces feel possible.","E —","Split my project into five tasks — done two days early.","P —","Small steps solve big problems."],a2:["P —","Effective problem-solvers think clearly, not just work harder.","R —","Calm expands perspective. Panic shrinks it.","E —","The one person who stopped to map the problem while others panicked — found the solution.","P —","Teach children to think more clearly when things go wrong."]},
+     "sharing feelings":{a0:["P —","Always say how you feel!","R —","People can help when they know.","E —","I told my teacher I was nervous and she helped!","P —","Say how you feel!"],a1:["P —","Schools should make space for emotions.","R —","Emotionally supported students perform better.","E —","Morning check-ins halved reported student stress.","P —","Wellbeing and learning are inseparable."],a2:["P —","Emotional literacy is as vital as reading and numeracy.","R —","A child who can't regulate emotions can't learn or connect effectively.","E —","Schools with SEL show sustained gains in both wellbeing and academic outcomes.","P —","We must educate the whole child."]},
+     "telling a story":{a0:["P —","Tell your story!","R —","Your story is special.","E —","My class loved my story!","P —","Share it!"],a1:["P —","Everyone has a story worth sharing.","R —","Real experiences help others feel less alone.","E —","Three kids said they felt the same way I did about moving schools.","P —","Your story is exactly the right size for someone who needs it."],a2:["P —","Authentic personal narrative is one of the most powerful acts of human connection.","R —","A real story told honestly cuts through everything.","E —","When I told my real story, the room erupted with recognition.","P —","Tell the true story. It will not just be heard — it will be felt."]}
+   }
+  },
+  {id:"soar",icon:"🦅",name:"SOAR",diff:"hard",desc:"Tell a dramatic story that shows how you overcame a real challenge",
+   usecases:[{label:"Inspire",color:"u-coral"},{label:"Tell a powerful story",color:"u-purple"},{label:"Show resilience",color:"u-teal"},{label:"Motivate others",color:"u-amber"},{label:"Speech or presentation",color:"u-blue"}],
+   when:"Use when you want to inspire, motivate, or impress — in speeches, presentations, or any time you want your story to have emotional impact and show how you overcame something hard.",
+   steps:[
+     {key:"S — Situation",prompt:{a0:"Where were you and what was happening?",a1:"Set the scene — where, when, and who was there.",a2:"Establish the context with vivid, specific detail."}},
+     {key:"O — Obstacle",prompt:{a0:"What was the hardest, scariest part?",a1:"What made this situation really difficult?",a2:"Articulate the core challenge with precision."}},
+     {key:"A — Action",prompt:{a0:"What did YOU do to be brave or smart?",a1:"What specific steps did you take to face it?",a2:"Describe the deliberate choices and actions you took."}},
+     {key:"R — Result",prompt:{a0:"How did it end? What happened after?",a1:"What was the outcome and what did you learn?",a2:"What changed — and what did this reveal about you?"}}
+   ],
+   ex:{
+     "at school":{a0:["S —","It was show and tell day!","O —","I was SO nervous my legs were shaking.","A —","I took a big breath and talked anyway.","R —","Everyone clapped! I felt like a real superstar!"],a1:["S —","The day of our biggest class presentation, I completely blanked.","O —","A week of preparation vanished the moment I stood up.","A —","I took a breath, started with the one fact I was sure of, and let the rest come back.","R —","I passed — and learned that panic is the real enemy, not the audience."],a2:["S —","State academic competition — judges, competitors, an audience I couldn't see past the lights.","O —","My preparation hadn't accounted for how my mind goes silent under that specific kind of pressure.","A —","I gave myself thirty seconds of stillness, started with one grounded truth, and built outward from there.","R —","I placed second. But I carried home something more valuable: the knowledge that I can perform when it genuinely costs something."]},
+     "at home":{a0:["S —","The lights went out at night!","O —","It was SO dark and really scary!","A —","I found the flashlight and held my little sister's hand.","R —","She stopped crying. I felt SO brave!"],a1:["S —","A storm knocked out our power and my parents weren't home.","O —","My younger siblings were frightened and I had no idea what to do.","A —","I found candles, made hot drinks, and turned the whole thing into a game.","R —","By the time my parents got home, we were laughing in a blanket fort. They said I handled it perfectly."],a2:["S —","A winter storm took out power at 7pm — alone with two frightened younger siblings for four hours.","O —","The cold was dropping, fear was rising, and I felt the full weight of being the oldest.","A —","I made a conscious choice to be calm out loud — narrating every action as an adventure, keeping my voice steady even when I didn't feel it.","R —","My parents arrived to find us in a glowing fort, mid-story. I learned that calm is a choice — and children are always watching you make it."]},
+     "with friends":{a0:["S —","My best friend was crying at recess.","O —","I didn't know what to say or do.","A —","I sat right next to her and held her hand.","R —","She said I was the best friend in the world!"],a1:["S —","My closest friend said something hurtful in front of a group.","O —","Every instinct told me to fight back or walk away.","A —","I waited. When we were alone, I told her calmly exactly how it made me feel.","R —","She hadn't realized. That conversation made our friendship deeper than it had ever been."],a2:["S —","In front of people I respected, my closest friend said something that cut at something I was already insecure about.","O —","The pull to respond defensively and publicly was almost physical.","A —","I chose none of those instincts. Later, in private, I spoke with precision: not about what she did, but about its specific impact on me.","R —","What followed was one of the most honest exchanges of my life. Conflict, handled with intention, is sometimes the path to a real friendship."]},
+     "on a trip":{a0:["S —","We were hiking and we got lost!","O —","No one knew which way to go!","A —","I remembered a big tree we had passed and led everyone back!","R —","We found the path! My family said I was amazing!"],a1:["S —","Halfway through a hike, our group realized we'd gone off trail.","O —","No phone signal, no map, and the sun was starting to go down.","A —","I remembered a landmark from earlier and guided the group back step by step.","R —","We made it out before dark. Staying calm is the most important survival skill."],a2:["S —","An hour in, our group fell silent with the same realization: disoriented, no connectivity, limited daylight.","O —","The temptation to guess, rush, and panic collectively was real and dangerous.","A —","I called the group to stillness, asked everyone to name one landmark they remembered, and reconstructed the route from shared memory.","R —","We emerged as the last light faded — exhausted, grateful, and bonded in a way only shared adversity produces."]},
+     "in a sport":{a0:["S —","It was the BIG championship game!","O —","We were losing and I was so scared.","A —","I ran my fastest and kicked my absolute hardest!","R —","I SCORED! We WON! Everyone went completely crazy!"],a1:["S —","Championship game, five minutes left, down by two goals.","O —","The team's energy was collapsing. Everyone was losing belief.","A —","I called everyone together: focus on the next 30 seconds, not the scoreboard.","R —","We scored twice in four minutes and won. I learned what it means to believe when it's hardest."],a2:["S —","Final five minutes of the championship, down by two, facing opponents who had beaten us twice.","O —","I could feel the team fracturing — not physically, but mentally. The belief was leaving.","A —","I made direct eye contact with each player and said the only true thing I knew: 'We have done harder things than this.'","R —","We scored. Then scored again. One-point win. Leadership is not the loudest voice in the room. It is the steadiest one."]},
+     "solving a problem":{a0:["S —","My big art project got all ruined!","O —","It was broken and I felt like crying.","A —","I took a breath and started completely over.","R —","My new version was even better! My teacher loved it!"],a1:["S —","The night before my project was due, everything stopped working.","O —","No backup, no time, and no one available to help.","A —","I listed every possible cause and tested each one until I found the error.","R —","Submitted on time. The bigger win was proving I could solve hard things alone."],a2:["S —","Eleven hours before the deadline, every component failed simultaneously for no apparent reason.","O —","The error was unfamiliar, the clock was running, and I was completely alone with the problem.","A —","I resisted the urge to guess. Listed what I still knew to be true, rebuilt from that foundation, tested after every single change.","R —","Submitted at 3am — cleaner than before the crash. I have not feared a hard problem in quite the same way since."]},
+     "sharing feelings":{a0:["S —","I was feeling sad and didn't know why.","O —","I didn't want to talk to anybody.","A —","I drew a picture of how I felt instead.","R —","I showed my mom and she understood me! I felt SO much better!"],a1:["S —","I had been carrying a heavy feeling for weeks I couldn't explain.","O —","Every time I tried to say it out loud, the words weren't there.","A —","I started writing — small entries at first, then longer ones.","R —","Eventually I could describe it well enough to share. And once I shared it, the weight finally lifted."],a2:["S —","For weeks I carried something heavy and formless — an emotion with no name and no language.","O —","Every attempt to speak it dissolved. The gap between what I felt and what I could say felt uncrossable.","A —","I began writing. Not for anyone. Just to make the invisible visible. Word by word, it took shape.","R —","When I read it to someone I loved, they said: 'I felt that too.' Naming the darkness — even imperfectly — had let in light."]},
+     "telling a story":{a0:["S —","One day something VERY funny happened to me!","O —","I was afraid no one would believe me.","A —","I told it anyway with all my best funny voices!","R —","Everyone laughed so hard! They asked me to tell it again and again!"],a1:["S —","I witnessed something so unusual I hesitated to tell anyone.","O —","I was sure it would sound impossible.","A —","I told it exactly as it happened, every detail, and let people decide for themselves.","R —","Halfway through, the room went quiet. By the end, someone said: 'That happened to me too.'"],a2:["S —","There was a moment in my life so quietly extraordinary I kept it to myself for years.","O —","How do you tell a story you fear will be reduced by the telling?","A —","I finally told it. Slowly, exactly as it happened, without apology — and with the full vulnerability of not knowing how it would land.","R —","A stranger said: 'I've been waiting my whole life for someone to say that out loud.' Some stories are not only ours to keep."]}
+   }
+  },
+  {id:"sbi",icon:"🎯",name:"SBI",diff:"medium",desc:"Give feedback clearly and kindly without blame",
+   usecases:[{label:"Give feedback",color:"u-teal"},{label:"Address behavior",color:"u-coral"},{label:"Resolve conflict",color:"u-purple"},{label:"Express impact",color:"u-pink"},{label:"Coach someone",color:"u-amber"}],
+   when:"Use when you need to give someone feedback, address behavior that affected you, resolve a conflict, or help someone understand the impact of their actions — without attacking them.",
+   steps:[
+     {key:"S — Situation",prompt:{a0:"When and where did it happen? Tell us!",a1:"Name the exact time and place it happened.",a2:"Establish the specific context clearly and objectively."}},
+     {key:"B — Behavior",prompt:{a0:"What did the person say or do?",a1:"Describe exactly what they did — just facts.",a2:"State the observable behavior without interpretation."}},
+     {key:"I — Impact",prompt:{a0:"How did it make you feel?",a1:"How did it affect you or others?",a2:"Articulate the full emotional and practical impact."}}
+   ],
+   ex:{
+     "at school":{a0:["S —","At lunch today,","B —","you took my seat.","I —","I had nowhere to sit and felt sad."],a1:["S —","During group work yesterday,","B —","you kept talking over me when I shared my idea.","I —","I felt like my contributions didn't matter."],a2:["S —","During yesterday's session,","B —","you redirected attention away from my contributions mid-sentence.","I —","Over time that eroded my confidence and left me disengaged from a project I had cared about."]},
+     "at home":{a0:["S —","This morning,","B —","you took my toy without asking.","I —","I felt upset and didn't want to play."],a1:["S —","At dinner last night,","B —","you interrupted me every time I tried to talk.","I —","I felt invisible."],a2:["S —","During dinner last evening,","B —","each attempt I made to speak was cut short before I could finish a thought.","I —","I made a quiet decision to stop speaking — and carried that into the next morning."]},
+     "with friends":{a0:["S —","At recess,","B —","you left me out.","I —","I felt really lonely."],a1:["S —","When we planned the weekend,","B —","you made every decision without asking anyone.","I —","A few of us felt our opinions didn't matter."],a2:["S —","During group planning on Friday,","B —","every decision was made unilaterally.","I —","Several members withdrew — and what should have been exciting began with the sting of exclusion."]},
+     "on a trip":{a0:["S —","On the bus,","B —","you were yelling loudly.","I —","I got a headache and couldn't enjoy the trip."],a1:["S —","At the museum,","B —","you rushed everyone past exhibits.","I —","I missed most of the content and felt frustrated."],a2:["S —","Throughout the museum visit,","B —","the pace was set without consultation.","I —","I felt less like a participant and more like a passive presence in someone else's itinerary."]},
+     "in a sport":{a0:["S —","During the game,","B —","you didn't pass me the ball.","I —","I felt left out."],a1:["S —","At practice last week,","B —","you criticized me in front of the team.","I —","I felt embarrassed and it knocked my confidence."],a2:["S —","During Tuesday's practice,","B —","a critique was delivered publicly without prior private conversation.","I —","It caused a sustained erosion of confidence across multiple sessions — and shifted how psychologically safe I felt there."]},
+     "solving a problem":{a0:["S —","Working together,","B —","you did everything yourself.","I —","I felt useless."],a1:["S —","When we were assigned to work as a team,","B —","you took over without asking for input.","I —","The rest of us felt unnecessary."],a2:["S —","During our collaborative task,","B —","the process was commandeered entirely.","I —","It prevented valuable contributions from surfacing and communicated our presence was ornamental."]},
+     "sharing feelings":{a0:["S —","When I was sad,","B —","you laughed at me.","I —","That hurt so much."],a1:["S —","When I tried to share how I felt,","B —","you changed the subject.","I —","I felt unheard and even less willing to open up next time."],a2:["S —","When I shared something vulnerable,","B —","the conversation shifted immediately away from it.","I —","The message I received was that what I was carrying didn't warrant space — which is precisely what makes people stop trying to open up at all."]},
+     "telling a story":{a0:["S —","When I told my story,","B —","you walked away.","I —","I felt like it didn't matter."],a1:["S —","When I was telling you something important,","B —","you picked up your phone.","I —","I felt like what I was saying wasn't worth your attention."],a2:["S —","At the moment I shared something that mattered to me,","B —","attention shifted elsewhere completely.","I —","That interrupted not just the story, but the willingness to be open — and that takes significant time and trust to rebuild."]}
+   }
+  },
+  {id:"wwsnw",icon:"🔄",name:"WHAT / SO WHAT / NOW WHAT",diff:"hard",desc:"Reflect on an experience and decide what to do next",
+   usecases:[{label:"Reflect",color:"u-blue"},{label:"Debrief",color:"u-teal"},{label:"Learn from mistakes",color:"u-coral"},{label:"Plan next steps",color:"u-purple"},{label:"Evaluate",color:"u-amber"},{label:"Grow",color:"u-pink"}],
+   when:"Use after something happens — a success, a failure, a lesson, or any experience worth learning from. Great for journals, team debriefs, counseling, and reflection sessions.",
+   steps:[
+     {key:"WHAT?",prompt:{a0:"What happened? Just tell the facts!",a1:"Describe what happened clearly and simply.",a2:"State the facts objectively — no interpretation yet."}},
+     {key:"SO WHAT?",prompt:{a0:"Why does it matter? What did you learn?",a1:"Why is this important? What does it mean?",a2:"Analyze the significance and deeper implications."}},
+     {key:"NOW WHAT?",prompt:{a0:"What will YOU do differently because of this?",a1:"What will you change or do going forward?",a2:"Define the concrete action or shift in approach."}}
+   ],
+   ex:{
+     "at school":{a0:["WHAT?","I failed my spelling test.","SO WHAT?","I didn't practice enough.","NOW WHAT?","I will practice every night!"],a1:["WHAT?","I failed history even though I studied.","SO WHAT?","I was re-reading, not testing myself.","NOW WHAT?","I'll use flashcards and practice questions now."],a2:["WHAT?","I failed a test I had genuinely prepared for.","SO WHAT?","The failure exposed a flaw in my method, not my effort — I rehearsed familiarity rather than retrieval.","NOW WHAT?","Restructuring entirely: active recall, spaced repetition, practice under simulated pressure."]},
+     "at home":{a0:["WHAT?","I yelled at my brother.","SO WHAT?","He cried and I felt awful.","NOW WHAT?","I'll take three breaths first next time."],a1:["WHAT?","I lost my temper with my sibling over something small.","SO WHAT?","I was tired and took it out on someone who didn't deserve it.","NOW WHAT?","Notice when I'm running low and take space before snapping."],a2:["WHAT?","I directed accumulated frustration at my sibling who had done nothing to provoke it.","SO WHAT?","It revealed I have no reliable mechanism for processing internal pressure before it displaces outward.","NOW WHAT?","Building a daily decompression habit so I arrive at home interactions without already being depleted."]},
+     "with friends":{a0:["WHAT?","I said something mean.","SO WHAT?","She was hurt.","NOW WHAT?","Think before I speak — and say sorry."],a1:["WHAT?","I made a joke that landed wrong.","SO WHAT?","She felt mocked. I've been doing this more than I noticed.","NOW WHAT?","Be more careful about humor that comes at someone else's cost."],a2:["WHAT?","A joke at my friend's expense landed very differently than intended.","SO WHAT?","Her reaction forced me to confront a pattern I had been comfortable ignoring.","NOW WHAT?","Internal test before speaking: is this funny for everyone, or only for me?"]},
+     "on a trip":{a0:["WHAT?","I forgot my backpack!","SO WHAT?","We turned around and were late.","NOW WHAT?","Checklist the night before!"],a1:["WHAT?","I forgot my passport the morning of the flight.","SO WHAT?","Completely preventable — stressed the whole family.","NOW WHAT?","Travel checklist done the night before, not the morning of."],a2:["WHAT?","A critical document was missing — cascading into a group crisis.","SO WHAT?","Root cause: reliance on memory rather than a system, under cognitive load.","NOW WHAT?","Building a preparation protocol that removes memory from the equation entirely."]},
+     "in a sport":{a0:["WHAT?","I missed the penalty kick.","SO WHAT?","We lost.","NOW WHAT?","Practice kicks every day!"],a1:["WHAT?","I missed a penalty in the final.","SO WHAT?","I'd never practiced under real pressure.","NOW WHAT?","Add pressure simulations: smaller windows, people watching."],a2:["WHAT?","Missed the decisive penalty in the championship.","SO WHAT?","Revealed I had never practiced performing when failure was real and visible.","NOW WHAT?","Redesigning training to center on discomfort — the game is played at the level of pressure."]},
+     "solving a problem":{a0:["WHAT?","My idea didn't work.","SO WHAT?","I learned what doesn't work!","NOW WHAT?","Try a completely different way."],a1:["WHAT?","My solution turned out to be wrong.","SO WHAT?","I had been so confident. Confidence ≠ correctness.","NOW WHAT?","Stress-test ideas against obvious objections before committing."],a2:["WHAT?","I proposed a solution with confidence — and it failed completely.","SO WHAT?","I had confused the feeling of certainty with the evidence of correctness.","NOW WHAT?","Separating internal conviction from external verification — especially for the ideas I feel most certain about."]},
+     "sharing feelings":{a0:["WHAT?","I didn't tell anyone I was sad.","SO WHAT?","I felt worse all day.","NOW WHAT?","Tell someone right away next time."],a1:["WHAT?","I didn't tell my friend I was upset — just went quiet.","SO WHAT?","They had no idea. I stayed hurt unnecessarily for days.","NOW WHAT?","Name it calmly in the moment. Silence protects nothing."],a2:["WHAT?","I chose silence over honest communication when honesty was called for.","SO WHAT?","The unexpressed thing compounded. The relationship paid the cost of my avoidance, not my honesty.","NOW WHAT?","Practice naming feelings in real time — the ones that linger almost always require a conversation."]},
+     "telling a story":{a0:["WHAT?","I told my story in front of class.","SO WHAT?","Everyone listened! It felt great!","NOW WHAT?","Tell more stories!"],a1:["WHAT?","I shared a personal story for the first time.","SO WHAT?","People connected more than I expected. My experience wasn't as unique as I thought.","NOW WHAT?","Share more, more honestly. People connect to real things — not polished ones."],a2:["WHAT?","For the first time, I told a genuinely personal story in public.","SO WHAT?","The response overturned my assumption that my story was too specific to resonate. Specificity was not the barrier — it was the bridge.","NOW WHAT?","Committing to telling the truth more often, in more rooms, with less editing for palatability."]}
+   }
+  },
+  {id:"fab",icon:"✨",name:"FAB",diff:"medium",desc:"Feature + Advantage + Benefit — explain value clearly",
+   usecases:[{label:"Recommend",color:"u-teal"},{label:"Pitch an idea",color:"u-purple"},{label:"Sell or suggest",color:"u-coral"},{label:"Show value",color:"u-amber"},{label:"Explain a product",color:"u-blue"}],
+   when:"Use when recommending something, pitching an idea, or helping someone understand the value of a feature, tool, or choice.",
+   steps:[
+     {key:"F — Feature",prompt:{a0:"Name one cool thing about it!",a1:"Name one quality or feature.",a2:"Identify the key differentiating feature."}},
+     {key:"A — Advantage",prompt:{a0:"What does that cool thing let you do?",a1:"What does that feature make possible?",a2:"Explain the functional advantage it creates."}},
+     {key:"B — Benefit",prompt:{a0:"Why is that great for YOU?",a1:"Why does that advantage matter to the person?",a2:"Articulate the real-world impact."}}
+   ],
+   ex:{
+     "at school":{a0:["F —","This book has colorful pictures!","A —","Pictures explain hard things.","B —","You learn faster and it's way more fun!"],a1:["F —","Our tablets have offline mode.","A —","Students access materials without internet.","B —","No one falls behind during outages."],a2:["F —","This database integrates primary sources into search results.","A —","Students move from query to verified evidence in seconds.","B —","Removes the greatest bottleneck in academic research — and democratizes access."]},
+     "at home":{a0:["F —","This lamp is super bright!","A —","It lights the whole room.","B —","You can read without hurting your eyes!"],a1:["F —","This planner has a priorities section.","A —","Everyone agrees on what matters before the week starts.","B —","Less time on low-value things, more on what matters."],a2:["F —","This home system learns household patterns over two weeks.","A —","Automatically optimizes scheduling without manual input.","B —","Household runs smoothly with less cognitive overhead — more energy for each other."]},
+     "with friends":{a0:["F —","This game has simple rules!","A —","Anyone can learn in two minutes.","B —","Everyone plays together!"],a1:["F —","This app lets the group share notes in real time.","A —","Everyone sees changes as they happen.","B —","No outdated notes — group sessions become efficient."],a2:["F —","This workspace supports simultaneous editing with version history.","A —","Groups debate and refine thinking in one persistent document.","B —","Final output reflects the full depth of the group's thinking."]},
+     "on a trip":{a0:["F —","This bag is tiny and light!","A —","It fits anywhere.","B —","You carry it all day with energy to spare!"],a1:["F —","This app works fully offline.","A —","Maps and guides without wifi.","B —","Never stranded without directions."],a2:["F —","This app pre-caches complete destination data before departure.","A —","Full functionality offline from arrival to departure.","B —","Genuine spontaneous exploration without connectivity anxiety — anywhere."]},
+     "in a sport":{a0:["F —","These shoes grip really well!","A —","Your feet don't slip.","B —","You run faster and don't fall!"],a1:["F —","This app logs sprint times automatically.","A —","See where you're improving and where you've plateaued.","B —","Improve faster with decisions based on real data."],a2:["F —","This platform captures biomechanical data in real time.","A —","Coaches identify micro-inefficiencies before they become injury or ceiling.","B —","Precision feedback previously accessible only to Olympic programs — for every athlete."]},
+     "solving a problem":{a0:["F —","This checklist is short!","A —","You follow it fast.","B —","You never forget a step!"],a1:["F —","This method breaks problems into what, why, and what to do.","A —","Stops you jumping to solutions before understanding root cause.","B —","Stop fixing the same problem twice."],a2:["F —","This methodology separates symptoms from root causes before proposing solutions.","A —","Systematically eliminates surface-level interventions.","B —","Teams report a significant reduction in recurring failures — treating the fire's source, not just the flame."]},
+     "sharing feelings":{a0:["F —","This chart has faces!","A —","Just point to how you feel.","B —","People understand right away!"],a1:["F —","This journal gives specific questions, not a blank page.","A —","Guides you to name the feeling and where it came from.","B —","After weeks, you understand your patterns better than most adults."],a2:["F —","This framework uses research-informed prompts to distinguish primary from secondary emotional responses.","A —","Users develop precise emotional vocabulary most people never formally acquire.","B —","Transforms relationships, conflict resolution, and emotional regulation over time."]},
+     "telling a story":{a0:["F —","Good stories have a beginning, middle, and end!","A —","Easy to follow.","B —","People stay interested the whole time!"],a1:["F —","This framework includes a built-in tension point.","A —","Forces you to find where things go wrong — and how you handled it.","B —","Stories with tension are the ones people remember."],a2:["F —","This framework anchors the story to the moment the outcome became uncertain.","A —","Activates listener's emotional investment before the resolution.","B —","The difference between being heard and being remembered."]}
+   }
+  }
+];
+
+let selAge="4–6",selFwId="isaw",selSit="at school",step=0,done=false;
+
+// Rubric hints per framework id: minWords by age, and required concept checks per step index
+const RUBRIC={
+  isaw:{minWords:{a0:3,a1:5,a2:8},stepHints:[
+    {label:"says what you saw",check:t=>t.length>2},
+    {label:"describes it",check:t=>t.length>2},
+    {label:"names a feeling",check:t=>/happy|sad|excited|nervous|scared|proud|worried|curious|calm|angry|surprised|amazed|cozy|lonely|brave|grateful|empath/i.test(t)}
+  ]},
+  whowhat:{minWords:{a0:2,a1:4,a2:6},stepHints:[
+    {label:"names a who",check:t=>t.length>1},
+    {label:"says what happened",check:t=>t.split(" ").length>=2}
+  ]},
+  star:{minWords:{a0:3,a1:6,a2:9},stepHints:[
+    {label:"sets the scene",check:t=>t.length>3},
+    {label:"states the task",check:t=>t.length>3},
+    {label:"describes your action",check:t=>/\bi\b/i.test(t)},
+    {label:"gives a result",check:t=>t.length>3}
+  ]},
+  pep:{minWords:{a0:3,a1:6,a2:9},stepHints:[
+    {label:"states an opinion",check:t=>t.length>3},
+    {label:"gives a reason",check:t=>/because|since|so that|reason/i.test(t)||t.length>8},
+    {label:"gives proof/example",check:t=>t.length>4}
+  ]},
+  prep:{minWords:{a0:3,a1:6,a2:10},stepHints:[
+    {label:"states your position",check:t=>t.length>3},
+    {label:"gives a reason",check:t=>/because|since|reason/i.test(t)||t.length>8},
+    {label:"gives an example",check:t=>t.length>4},
+    {label:"restates your point",check:t=>t.length>3}
+  ]},
+  soar:{minWords:{a0:4,a1:7,a2:10},stepHints:[
+    {label:"sets the scene",check:t=>t.length>3},
+    {label:"names the obstacle",check:t=>/hard|difficult|scary|tough|problem|challenge/i.test(t)||t.length>5},
+    {label:"describes your action",check:t=>/\bi\b/i.test(t)},
+    {label:"gives the result",check:t=>t.length>3}
+  ]},
+  sbi:{minWords:{a0:3,a1:6,a2:9},stepHints:[
+    {label:"says when/where",check:t=>t.length>3},
+    {label:"describes the behavior",check:t=>t.length>3},
+    {label:"says the impact/feeling",check:t=>/felt|feel|made me|impact/i.test(t)||t.length>5}
+  ]},
+  wwsnw:{minWords:{a0:3,a1:6,a2:9},stepHints:[
+    {label:"states what happened",check:t=>t.length>3},
+    {label:"explains why it matters",check:t=>t.length>4},
+    {label:"says what you'll do next",check:t=>/will|going to|next time|from now/i.test(t)||t.length>5}
+  ]},
+  fab:{minWords:{a0:3,a1:6,a2:9},stepHints:[
+    {label:"names a feature",check:t=>t.length>3},
+    {label:"explains the advantage",check:t=>t.length>3},
+    {label:"states the benefit",check:t=>/you|your/i.test(t)||t.length>4}
+  ]}
+};
+
+let inputMode="type"; // 'type' or 'speak'
+let recognizing=false;
+let recognitionObj=null;
+let lastFeedback=null;
+
+function getFw(){return FWS.find(f=>f.id===selFwId)||FWS[0];}
+function ak(){return AGE_KEY[selAge];}
+function getEx(){const fw=getFw();const s=fw.ex[selSit]||fw.ex[Object.keys(fw.ex)[0]];return s[ak()]||s["a1"];}
+
+function render(){
+  const fw=getFw();const ex=getEx();const a=ak();
+  let h=`
+  <div class="sect-label">Age group</div>
+  <div class="row">${AGES.map(ag=>`<button class="pill ${ag===selAge?"a-active":""}" onclick="sAge('${ag}')">${ag}</button>`).join("")}</div>
+  <div class="sect-label">Framework</div>
+  <div class="fw-scroll">${FWS.map(f=>`<button class="fw-btn ${f.id===selFwId?"f-active":""}" onclick="sFw('${f.id}')">${f.icon} ${f.name}</button>`).join("")}</div>
+  <div class="use-bar">
+    <span class="use-title">Use when you want to:</span>
+    ${fw.usecases.map(u=>`<span class="use-tag ${u.color}">${u.label}</span>`).join("")}
+  </div>
+  <div class="sect-label">Situation</div>
+  <div class="sit-row">${SITS.map(s=>`<div class="sc-chip ${s===selSit?"s-active":""}" onclick="sSit('${s}')">${s}</div>`).join("")}</div>`;
+
+  if(done){
+    h+=`<div class="panel"><div class="done-wrap">
+      <div class="done-e">🎉</div>
+      <div class="done-t">Well done!</div>
+      <div class="done-s">Practiced <strong>${fw.name}</strong> · ${selSit} · ages ${selAge}</div>
+      <button class="nav-btn" style="margin-top:8px" onclick="reset()">Try again ↺</button>
+    </div></div>`;
+  } else {
+    h+=`<div class="panel">
+      <div class="ph">
+        <div class="ph-icon">${fw.icon}</div>
+        <div>
+          <div class="ph-title">${fw.name} <span class="badge b-${fw.diff}">${fw.diff}</span></div>
+          <div class="ph-sub">${fw.desc}</div>
+          <div class="ph-when">${fw.when}</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      ${fw.steps.map((s,i)=>`<div class="step ${i===step?"cur":""}">
+        <div class="snum">${i+1}</div>
+        <div><div class="sk">${s.key}</div>${i===step?`<div class="sc">${s.prompt[a]}</div>`:""}</div>
+      </div>`).join("")}
+      <div class="ex-box">
+        <div class="ex-label">Example · "${selSit}" · ages ${selAge}</div>
+        <div class="ex-text">${(()=>{let o="";for(let i=0;i<ex.length;i+=2){o+=`<span class="ex-key">${ex[i]}</span> ${ex[i+1]}${i+2<ex.length?" &nbsp;·&nbsp; ":""}`;}return o;})()}</div>
+      </div>
+      <div class="practice-box">
+        <div class="sect-label">Your turn — try step ${step+1}</div>
+        <div class="practice-toggle">
+          <button class="ptab ${inputMode==="type"?"pt-active":""}" onclick="setInputMode('type')">⌨️ Type it</button>
+          <button class="ptab ${inputMode==="speak"?"pt-active":""}" onclick="setInputMode('speak')">🎤 Say it</button>
+        </div>
+        <textarea class="practice-input" id="practiceInput" placeholder="${inputMode==="speak"?"Tap the mic and speak — your words will appear here!":"Type what you'd say for this step..."}"></textarea>
+        ${inputMode==="speak"?`<div class="mic-row"><button class="mic-btn ${recognizing?"listening":""}" id="micBtn" onclick="toggleMic()">${recognizing?"⏹️ Stop":"🎤 Tap to speak"}</button></div>`:""}
+        <div class="mic-row">
+          <button class="check-btn" onclick="checkPractice()">✓ Check my answer</button>
+        </div>
+        <div id="feedbackArea"></div>
+      </div>
+      <button class="big-btn" onclick="nxt()">${step<fw.steps.length-1?"I said mine — next step! →":"Finish! ✓"}</button>
+      <div class="nav-row">
+        <button class="nav-btn" onclick="prv()" ${step===0?"disabled":""}>← Back</button>
+        <button class="nav-btn" onclick="reset()">↺ Reset</button>
+      </div>
+    </div>`;
+  }
+  document.getElementById("app").innerHTML=h;
+}
+
+function sAge(a){selAge=a;step=0;done=false;render();}
+function sFw(id){selFwId=id;step=0;done=false;render();}
+function sSit(s){selSit=s;render();}
+function nxt(){const fw=getFw();lastFeedback=null;if(step<fw.steps.length-1){step++;render();}else{done=true;render();}}
+function prv(){lastFeedback=null;if(step>0){step--;render();}}
+function reset(){step=0;done=false;lastFeedback=null;render();}
+
+function setInputMode(m){
+  inputMode=m;
+  if(recognizing) stopMic();
+  render();
+  setTimeout(()=>{const el=document.getElementById("practiceInput"); if(el) el.focus();},50);
+}
+
+function toggleMic(){
+  if(recognizing){ stopMic(); return; }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){
+    alert("Speech recognition isn't supported in this browser yet. Try typing instead, or use Safari/Chrome on your phone.");
+    return;
+  }
+  recognitionObj = new SR();
+  recognitionObj.lang = 'en-US';
+  recognitionObj.interimResults = true;
+  recognitionObj.continuous = true;
+
+  let finalText = document.getElementById("practiceInput") ? document.getElementById("practiceInput").value : "";
+
+  recognitionObj.onresult = (event)=>{
+    let interim = "";
+    for(let i=event.resultIndex;i<event.results.length;i++){
+      const transcript = event.results[i][0].transcript;
+      if(event.results[i].isFinal){ finalText += transcript + " "; }
+      else { interim += transcript; }
+    }
+    const el = document.getElementById("practiceInput");
+    if(el) el.value = (finalText + interim).trim();
+  };
+  recognitionObj.onerror = ()=>{ stopMic(); };
+  recognitionObj.onend = ()=>{ if(recognizing){ recognizing=false; render(); } };
+
+  recognizing = true;
+  render();
+  setTimeout(()=>{ try{ recognitionObj.start(); }catch(e){} },50);
+}
+
+function stopMic(){
+  if(recognitionObj){ try{ recognitionObj.stop(); }catch(e){} }
+  recognizing=false;
+  render();
+}
+
+function checkPractice(){
+  const el = document.getElementById("practiceInput");
+  const text = el ? el.value.trim() : "";
+  const fw = getFw();
+  const a = ak();
+  const rubric = RUBRIC[fw.id];
+  const fbArea = document.getElementById("feedbackArea");
+
+  if(!text){
+    fbArea.innerHTML = `<div class="feedback-card fb-needswork"><div class="fb-header">✏️ Nothing here yet!</div><ul class="fb-list"><li>Type your answer, or tap the mic and say it out loud, then check again.</li></ul></div>`;
+    return;
+  }
+
+  const words = text.split(/\s+/).filter(Boolean);
+  const wordCount = words.length;
+  const minWords = rubric.minWords[a] || 4;
+  const hint = rubric.stepHints[step] || rubric.stepHints[0];
+  const hintPassed = hint.check(text);
+  const longEnough = wordCount >= minWords;
+
+  let level, headerEmoji, headerText, items=[], nextStep;
+
+  if(longEnough && hintPassed){
+    level="great"; headerEmoji="🌟"; headerText="Great job!";
+    items.push("You used enough words to share a real idea.");
+    items.push(`Your answer ${hint.label} — exactly what this step needs.`);
+    nextStep="Tap 'next step' above when you're ready — you nailed this one!";
+  } else if(longEnough && !hintPassed){
+    level="okay"; headerEmoji="👍"; headerText="Good start — almost there!";
+    items.push("You wrote a good amount — nice work getting your thoughts out.");
+    items.push(`Try to make sure your answer clearly ${hint.label}.`);
+    nextStep="Read the example above again, then try adding one more sentence that does that.";
+  } else if(!longEnough && hintPassed){
+    level="okay"; headerEmoji="👍"; headerText="Nice try — add a bit more!";
+    items.push(`Good — your answer ${hint.label}.`);
+    items.push("Try adding a few more words so your idea is easier to follow.");
+    nextStep="Look at the example for ideas, then try saying a little more.";
+  } else {
+    level="needswork"; headerEmoji="💪"; headerText="Let's build on this!";
+    items.push("This is a good first try — every speaker starts somewhere!");
+    items.push(`Look at the example above, then try again so your answer ${hint.label}.`);
+    items.push(`Aim for at least ${minWords} words to share a full idea.`);
+    nextStep="Read the example one more time, then try typing or saying your answer again.";
+  }
+
+  lastFeedback = {level, fwName: fw.name, stepKey: getFw().steps[step].key, text, items, nextStep};
+
+  fbArea.innerHTML = `
+    <div class="feedback-card fb-${level}">
+      <div class="fb-header">${headerEmoji} ${headerText}</div>
+      <ul class="fb-list">${items.map(i=>`<li>${i}</li>`).join("")}</ul>
+      <div class="fb-next">Next step: ${nextStep}</div>
+    </div>
+    <button class="deeper-btn" onclick="openDeeperFeedback()">🤖 Want more detailed feedback? Ask Claude</button>
+    <div class="deeper-note">Opens Claude.ai in a new tab with your answer ready to go</div>
+  `;
+}
+
+function openDeeperFeedback(){
+  if(!lastFeedback) return;
+  const fw = getFw();
+  const prompt = `I'm practicing the ${fw.name} speech framework (for a kid age ${selAge}), situation: "${selSit}". For the step "${lastFeedback.stepKey}", I said: "${lastFeedback.text}". Can you give me kind, encouraging feedback like a teacher would, with one thing I did well and one specific tip to make it even better?`;
+  const url = "https://claude.ai/new?q=" + encodeURIComponent(prompt);
+  window.open(url, "_blank");
+}
+
+render();
+
+if('serviceWorker' in navigator) {
+  // no-op: works fine without a service worker for this simple app
+}
+</script>
+</body>
+</html>
